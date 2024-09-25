@@ -1,19 +1,19 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# PCAone algorithms in R with RcppEigen!
+# PCAone algorithms in R with RcppEigen\!
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 ## Installation
 
-You can install the development version of PCAoneR from
-[GitHub](https://github.com/) with:
-
 ``` r
-install.packages("devtools") # if not installed
-devtools::install_github("Zilong-Li/PCAoneR")
+# For the CRAN version
+install.packages("pcaone")
+# For the latest developing version
+## devtools::install_github("Zilong-Li/PCAoneR")
 ```
 
 ## Example
@@ -26,9 +26,9 @@ mat <- matrix(rnorm(100*5000), 100, 5000)
 res <- pcaone(mat, k = 10)
 str(res)
 #> List of 3
-#>  $ d: num [1:10] 80.6 80.1 79.6 79.1 79 ...
-#>  $ u: num [1:100, 1:10] -0.0565 -0.0404 -0.0268 -0.1161 0.0132 ...
-#>  $ v: num [1:5000, 1:10] -0.001085 -0.01002 -0.001169 -0.000801 -0.015958 ...
+#>  $ d: num [1:10] 80.1 79.3 78.8 78.5 78.4 ...
+#>  $ u: num [1:100, 1:10] -0.282 -0.106 -0.0348 -0.0219 0.0414 ...
+#>  $ v: num [1:5000, 1:10] -0.01971 0.00974 -0.02306 -0.00957 0.01311 ...
 #>  - attr(*, "class")= chr "pcaone"
 ```
 
@@ -50,23 +50,25 @@ timing <- microbenchmark(
     times=10)
 print(timing, unit='s')
 #> Unit: seconds
-#>        expr       min        lq      mean    median        uq        max neval
-#>         SVD 6.9045770 7.0373806 7.6021626 7.1162474 7.3132482 11.9759831    10
-#>        rSVD 2.9189460 2.9601497 3.0412117 3.0452150 3.1174170  3.1540262    10
-#> pcaone.alg1 0.5404496 0.5748938 0.6106437 0.5886755 0.6262602  0.8051892    10
-#> pcaone.alg2 0.8177738 0.8211726 0.8621549 0.8587051 0.8740997  0.9599908    10
+#>         expr       min        lq      mean    median        uq       max neval
+#>          SVD 6.3386527 6.4493697 6.5878084 6.4936343 6.6752989 7.2448005    10
+#>         rSVD 2.7598743 2.8006495 2.8523624 2.8390449 2.8630295 3.0286470    10
+#>  pcaone.alg1 0.5111962 0.5174421 0.5360362 0.5257972 0.5529187 0.5814665    10
+#>  pcaone.alg2 0.7594326 0.7668610 0.7872839 0.7833292 0.7878939 0.8441923    10
 ```
 
 The above test is run on my MacBook Pro 2019 with processor 2.6 GHz
-6-Core Intel Core i7. Note that the external BLAS or MKL routine is
-disabled by
-`export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1`.
+6-Core Intel Core i7. Note that the R is not linked to external BLAS or
+MKL routine. To proper benchmark the performance with single core, we
+can set the number of threads as one by `export OPENBLAS_NUM_THREADS=1
+OMP_NUM_THREADS=1 MKL_NUM_THREADS=1`.
 
 ## References
 
-* [Zilong Li, Jonas Meisner, Anders Albrechtsen (2022). PCAone: fast and accurate out-of-core PCA framework for large scale biobank data](https://doi.org/10.1101/2022.05.25.493261)
-* [Wenjian Yu, Yu Gu, Jian Li, Shenghua Liu, Yaohang Li (2017). Single-Pass PCA of Large High-Dimensional Data](https://arxiv.org/abs/1704.07669)
+  - [Zilong Li, Jonas Meisner, Anders Albrechtsen (2023). Fast and
+    accurate out-of-core PCA framework for large scale biobank
+    data](https://genome.cshlp.org/content/33/9/1599)
 
 ## Todo
 
-* write `configure` to detect and use MKL
+  - [ ] add `center` and `scale` method
